@@ -10,14 +10,21 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            ScrollView(
+                LazyVStack {
+                    ForEach(NetworkManager.shared.forecasts, id: \.id) {forcast in
+                        Text(forcast)
+                    }
+                }
+            )
         }
         .padding()
+        .onAppear {
+            NetworkManager.shared.getWeatherInfo()
+        }
     }
 }
+
 
 #Preview {
     ContentView()
