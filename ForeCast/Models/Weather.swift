@@ -34,13 +34,16 @@ struct List: Codable {
     let weather: [WeatherElement]
     let clouds: Clouds
     let wind: Wind
-    let visibility, pop: Int
+    let visibility: Int
+    let pop: Double
     let sys: Sys
     let dtTxt: String
+    let rain: Rain?
 
     enum CodingKeys: String, CodingKey {
         case dt, main, weather, clouds, wind, visibility, pop, sys
         case dtTxt = "dt_txt"
+        case rain
     }
 }
 
@@ -68,6 +71,15 @@ struct Main: Codable {
     }
 }
 
+// MARK: - Rain
+struct Rain: Codable {
+    let the3H: Double
+
+    enum CodingKeys: String, CodingKey {
+        case the3H = "3h"
+    }
+}
+
 // MARK: - Sys
 struct Sys: Codable {
     let pod: String
@@ -85,4 +97,3 @@ struct Wind: Codable {
     let deg: Int
     let gust: Double
 }
-

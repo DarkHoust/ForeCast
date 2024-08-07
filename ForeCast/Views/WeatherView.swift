@@ -17,13 +17,30 @@ struct WeatherView: View {
                 LazyVStack(alignment: .leading) {
                     ForEach(forecasts.indices, id: \.self) { index in
                         let forecast = forecasts[index]
-                        VStack(alignment: .leading) {
-                            Text(formatDate(dayIncrement: index))
-                                .font(.headline)
-                            Text("Temp: \(String(format: "%.1f", forecast.main.temp - 273.15))°C")
-                            Text("Feels like: \(String(format: "%.1f", forecast.main.feelsLike - 273.15))°C")
-                            Text("Description: \(forecast.weather.first?.description ?? "N/A")")
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(formatDate(dayIncrement: index))
+                                    .font(.headline)
+                                Text("Temp: \(String(format: "%.1f", forecast.main.temp - 273.15))°C")
+                                Text("Feels like: \(String(format: "%.1f", forecast.main.feelsLike - 273.15))°C")
+                                Text("Description: \(forecast.weather.first?.description ?? "N/A")")
+                            }
+                            
+                            Spacer()
+                            
+                            if let iconCode = forecast.weather.first?.icon {
+                                let iconURL = URL(string: "https://openweathermap.org/img/wn/\(iconCode)@2x.png")!
+                                AsyncImage(url: iconURL) { image in
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 50, height: 50)
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                            }
                         }
+                        
                         .frame(width: 280, alignment: .leading)
                         .padding()
                         .background(Color(.systemBackground))
